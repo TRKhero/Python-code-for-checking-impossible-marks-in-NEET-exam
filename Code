@@ -1,0 +1,30 @@
+def calculate_marks(correct_answers, incorrect_answers, unanswered_questions):
+    total_questions = 180
+    correct_marks = correct_answers * 4
+    incorrect_marks = incorrect_answers * 1
+    marks = correct_marks - incorrect_marks
+    return marks
+
+def find_impossible_scores(total_questions, total_marks):
+    impossible_scores = set()
+
+    for correct in range(total_questions + 1):
+        for incorrect in range(total_questions + 1 - correct):  # Ensure total_questions is not exceeded
+            unanswered = total_questions - correct - incorrect
+            marks = calculate_marks(correct, incorrect, unanswered)
+            if marks != total_marks:
+                impossible_scores.add(marks)
+    
+    return impossible_scores
+
+def find_missing_marks():
+    total_questions = 180
+    total_marks_range = range(-180, 720)  # Exclude 720
+    impossible_scores = find_impossible_scores(total_questions, 720)
+    missing_marks = set(total_marks_range) - impossible_scores
+    return sorted(missing_marks)
+
+# Example usage:
+missing_marks = find_missing_marks()
+print("Missing marks:")
+print(missing_marks)
